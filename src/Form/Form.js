@@ -2,8 +2,10 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import s from './form.module.css';
 import shortid from 'shortid';
+import { connect } from 'react-redux';
+import contactActions from '../redux/actions';
 
-export default function Form({ onSubmit }) {
+function Form({ onSubmit }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState();
 
@@ -51,3 +53,9 @@ export default function Form({ onSubmit }) {
     </>
   );
 }
+
+const mapDispatchToProps = dispatch => ({
+  onSubmit: (name, number) => dispatch(contactActions.addContact(name, number)),
+});
+
+export default connect(null, mapDispatchToProps)(Form);

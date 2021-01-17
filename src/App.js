@@ -4,6 +4,9 @@ import Form from './Form/Form';
 import Contactlist from './Contacts/Contacts';
 import Filter from './Filter/Filter';
 import s from './app.module.css';
+import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
+import addContact from './redux/actions';
 
 const contactsFirstRender = [
   { id: 'id-1', name: 'Barak Obama', number: '459-12-56' },
@@ -12,7 +15,7 @@ const contactsFirstRender = [
   { id: 'id-4', name: 'Thomas Jefferson', number: '227-91-26' },
 ];
 
-export default function App() {
+function App() {
   const [contacts, setContact] = useState(contactsFirstRender);
   const [filter, setFilter] = useState('');
 
@@ -32,31 +35,31 @@ export default function App() {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
-  const addContact = (name, number) => {
-    const contactWithId = {
-      id: shortid.generate(),
-      name,
-      number,
-    };
-    // setContact([contactWithId, ...contacts]);
+  // const addContact = (name, number) => {
+  //   const contactWithId = {
+  //     id: shortid.generate(),
+  //     name,
+  //     number,
+  //   };
+  //   // setContact([contactWithId, ...contacts]);
 
-    const getContacts = contacts.map(contact =>
-      contact.name.toLocaleLowerCase(),
-    );
+  //   const getContacts = contacts.map(contact =>
+  //     contact.name.toLocaleLowerCase(),
+  //   );
 
-    const isGetContactAlready = getContacts.includes(name.toLocaleLowerCase());
+  //   const isGetContactAlready = getContacts.includes(name.toLocaleLowerCase());
 
-    if (isGetContactAlready) {
-      alert(`${name} is already in contacts!`);
-      return;
-    } else {
-      setContact([contactWithId, ...contacts]);
-    }
-  };
+  //   if (isGetContactAlready) {
+  //     alert(`${name} is already in contacts!`);
+  //     return;
+  //   } else {
+  //     setContact([contactWithId, ...contacts]);
+  //   }
+  // };
 
-  const onDeleteContact = contactId => {
-    setContact(contacts.filter(contact => contact.id !== contactId));
-  };
+  // const onDeleteContact = contactId => {
+  //   setContact(contacts.filter(contact => contact.id !== contactId));
+  // };
 
   const getFilteredContacts = () => {
     const normalizedFilter = filter.toLowerCase();
@@ -69,12 +72,16 @@ export default function App() {
   return (
     <div className={s.mainSection}>
       <Form onSubmit={addContact} />
-      <Filter value={filter} onChange={e => setFilter(e.currentTarget.value)} />
+      {/* <Filter value={filter} onChange={e => setFilter(e.currentTarget.value)} /> */}
+      <Filter />
+
       <Contactlist
-        // contacts={this.state.contacts}
-        contacts={filteredContacts}
-        onDeleteContact={onDeleteContact}
+      // contacts={this.state.contacts}
+      // contacts={filteredContacts}
+      // onDeleteContact={onDeleteContact}
       />
     </div>
   );
 }
+
+export default connect()(App);

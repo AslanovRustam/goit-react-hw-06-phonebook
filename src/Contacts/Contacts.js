@@ -1,4 +1,6 @@
 import s from './contacs.module.css';
+import { connect } from 'react-redux';
+import contactActions from '../redux/actions';
 
 const Contactlist = ({ contacts, onDeleteContact }) => {
   return (
@@ -23,4 +25,26 @@ const Contactlist = ({ contacts, onDeleteContact }) => {
   );
 };
 
-export default Contactlist;
+const getFilteredContacts = (allContacts, filter) => {
+  const normalizedFilter = filter.toLowerCase();
+  return allContacts.filter(contact =>
+    contact.name.toLowerCase().includes(normalizedFilter),
+  );
+};
+
+// const filteredContacts = getFilteredContacts();
+
+const mapStateToProps = state => {
+  const { filter, contacts } = state.contacts;
+  // const normalizedFilter = filter.toLowerCase();
+  const filteredContacts = getFilteredContacts(contacts, filter);
+  return {
+    contacts: filteredContacts,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  onDeleteContact: id => dispatch(contactActions.deleteContact(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Contactlist);
