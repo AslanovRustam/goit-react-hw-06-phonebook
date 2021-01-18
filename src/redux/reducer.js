@@ -11,7 +11,18 @@ const contactsFirstRender = [
 const contacts = (state = contactsFirstRender, { type, payload }) => {
   switch (type) {
     case types.ADD:
-      return [...state, payload];
+      const getContacts = state.map(contact =>
+        contact.name.toLocaleLowerCase(),
+      );
+      const isGetContactAlready = getContacts.includes(
+        payload.name.toLocaleLowerCase(),
+      );
+      if (isGetContactAlready) {
+        alert(`${contacts.name} is already in contacts!`);
+        return state;
+      } else {
+        return [...state, payload];
+      }
     case types.DELETE:
       return state.filter(contact => contact.id !== payload);
     default:
