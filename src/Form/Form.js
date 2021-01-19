@@ -60,7 +60,7 @@ function Form({ onSubmit }) {
             onChange={e => setNumber(e.currentTarget.value)}
           ></input>
         </label>
-        <button className={s.button} type="submit">
+        <button className={s.buttonAdd} type="submit">
           Add contact
         </button>
       </form>
