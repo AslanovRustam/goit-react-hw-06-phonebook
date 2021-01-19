@@ -4,6 +4,7 @@ import s from './form.module.css';
 import shortid from 'shortid';
 import { connect } from 'react-redux';
 import contactActions from '../redux/actions';
+import store from '../redux/store';
 
 function Form({ onSubmit }) {
   const [name, setName] = useState('');
@@ -16,8 +17,21 @@ function Form({ onSubmit }) {
 
   const handleSubmitForm = event => {
     event.preventDefault();
-    onSubmit(name, number);
-    reset();
+    // onSubmit(name, number);
+    const getState = store.getState();
+    // console.log(getState.contacts.contacts);
+    const getContacts = getState.contacts.contacts.map(contact =>
+      contact.name.toLocaleLowerCase(),
+    );
+    const isGetContactAlready = getContacts.includes(name.toLocaleLowerCase());
+    if (isGetContactAlready) {
+      alert(`${name} is already in contacts!`);
+      reset();
+      return;
+    } else {
+      reset();
+      return onSubmit(name, number);
+    }
   };
 
   const contactInputId = shortid.generate();
